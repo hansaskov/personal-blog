@@ -75,20 +75,19 @@ These splits are usually weighted to  70% for training, 20% for validation, and 
 
 
 ### Normalize data
-Normalization is a vital preprocessing step in data science and machine learning. It's all about getting our data on an even footing before our models start learning. Here's why it's so essential in a nutshell:
+Normalization is a vital preprocessing step in data science and machine learning. It's all about getting our data on an even footing before our models start learning. This is usually done by transforming our data between 1 and 0. But, our dataset might biased in one of the two directions, to remidy this, we will calculate the mean and standard deviation of our data, and use that for our center. Normalization has the effect of making our gradient space "smoother", which will improve our optimizers ability to converge efficiently during the training process
 
-1. Equal Treatment: Normalization ensures that all features are treated equally. No feature dominates just because it has a larger scale, leading to a more balanced representation.
+#### 5. Image of smooth gradient space
+![example of photo without ball](/gradient_decent_1.webp)
 
-2. Efficiency: It helps optimization algorithms, like gradient descent, work better by putting data on a similar scale. This means faster convergence and fewer training iterations.
+So, how do we normalize our dataset? For the rest of the blog i will use pytorch and pytorch lightning as my preferred framework for working with deep learning. But let's get back to it, we will normalize our dataset by going over each of the three RGB channels and calculate the mean and standard deviation for all pixels in our training dataset. 
 
-3. Performance: Normalization reduces the risk of numerical instability and exploding gradients, leading to more stable and accurate models.
+Because our datasets can become extremely large, it's not feasible to handle everything at once. Instead, we employ a technique known as batch processing. To achieve this, we start by creating a Dataloader object, which aids us in breaking down the data into smaller, manageable pieces. We then perform operations on these batches and aggregate the results at the end.
 
-In essence, normalization sets the stage for successful machine learning by making sure our data isn't biased by varying scales. So, when working on your next data science project, remember: normalize for better results.
+In this process, we iterate over each batch, which has a size of **(B, C, W, H)**. Here, the first index represents batches, the second corresponds to RGB channels, and the last two denote width and height. Our objective is to calculate the mean and standard deviation over the RGB channels. To achieve this, we can collapse the batch, width, and height dimensions, resulting in a tensor of size **(C)**. In the end, we add it all together and print it out in the console. Let's look at the code! 
 
-So how do we normalize our dataset? For the rest of the blog i will use pytorch and pytorch lightning as my preferred framework for working with deep learning. But let's get back to it, we will normalize our dataset by going over each of the three RGB channels and calculate the mean and standard deviation for all pixels in our training dataset. 
 
-``` py 
-from torchvision import datasets, transforms
+``` py from torchvision import datasets, transforms
 from torch import zeros
 from torch.utils.data import DataLoader
 from tqdm import tqdm
@@ -99,14 +98,14 @@ def calc_mean_std(data_dir, batch_size, num_workers, num_channels):
     dataset = datasets.ImageFolder(data_dir + "train", transform=transforms.ToTensor(),)
 
     # Step 2: Create a DataLoader with for batched data loading
-    full_loader = DataLoader(dataset, shuffle=False, num_workers=num_workers, batch_size=batch_size, pin_memory=True)
+    data_loader = DataLoader(dataset, shuffle=False, num_workers=num_workers, batch_size=batch_size, pin_memory=True)
 
     # Step 3: Initialize variables for mean and std
     mean = zeros(num_channels)
     std = zeros(num_channels)
 
     # Step 4: Calculate the mean and std for the dataset in parallel
-    for inputs, _ in tqdm(full_loader, desc="==> Computing mean and std"):
+    for inputs, _ in tqdm(data_loader, desc="==> Computing mean and std"):
         # Step 5: Compute mean and std for each channel using PyTorch operations
         mean += inputs.mean(dim=(0, 2, 3))
         std += inputs.std(dim=(0, 2, 3))

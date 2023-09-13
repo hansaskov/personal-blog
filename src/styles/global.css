@@ -115,6 +115,13 @@ pre {
 }
 pre > code {
 	all: unset;
+	font-size: 14px;
+	
+}	
+
+/* Reduced font size */
+pre.shiki {
+    font-size: 12x; /* Decreased from 16px to 14px */
 }
 blockquote {
 	border-left: 4px solid var(--accent);

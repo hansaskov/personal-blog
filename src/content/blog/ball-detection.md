@@ -1,5 +1,5 @@
 ---
-title: 'Kick detection in two ways'
+title: 'Two approaches for Kick Detection'
 description: 'A guide to detect kick made in a football match'
 pubDate: 'Sep 14 2023'
 heroImage: '/with_ball_1.png'

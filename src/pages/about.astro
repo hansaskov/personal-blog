@@ -1,13 +1,25 @@
 ---
 import Layout from "../layouts/BlogPost.astro";
+import { Image, getImage } from "astro:assets";
+import myImage from "../assets/images/profile_picture_2.jpg";
+
+const optimizedImage = await getImage({
+	src: myImage,
+	format: 'avif',
+
+})
+
+
 ---
 
 <Layout
 	title="About Me!"
 	description="A personal page about Hans Askov"
 	pubDate={new Date("September 14 2023")}
-	heroImage="/profile_picture_2.jpg"
+	heroImage={myImage}
 >
+
+
 	<p>
 		Hello! I'm currently in my seventh semester, working towards a degree in
 		Software Engineering. I'm passionate about technology and have a keen

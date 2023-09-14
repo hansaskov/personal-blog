@@ -2,8 +2,10 @@
 title: 'Two approaches for Kick Detection'
 description: 'A guide to detect kick made in a football match'
 pubDate: 'Sep 14 2023'
-heroImage: '/kick_detection_1.jpg'
+heroImage: '../../assets/images/kick_detection_1.jpg'
 ---
+
+import { Image } from 'astro:assets';
 
 ## Description
 
@@ -21,19 +23,23 @@ Now, let's proceed to examine some examples from the dataset. Below, you'll find
 
 ### 1. Image with ball
 
-![example of photo with ball](/with_ball_2.png)
+![Image with Ball](../../assets/images/with_ball_2.png)
 
 ### 2. Image without ball
 
-![example of photo without ball](/without_ball_1.jpg)
+![Image with Ball](../../assets/images/without_ball_1.jpg)
 
 As expected, the first photo contains a ball, while the second one does not. Excellent! Now, before we proceed, it's important to pause for a moment. Upon further inspection of the `without_ball` folder, I encountered some questionable images. Here are two examples that caught my attention:
 
 ### 3. Example of images *"without"* ball
 
+import image_without_ball_3 from "../../assets/images/without_ball_3.jpg"
+import image_without_ball_2 from "../../assets/images/without_ball_2.jpg"
+
+
 <div style="display: flex; justify-content: space-between;">
-    <img src="/without_ball_3.jpg" alt="Kick Image 1" style="width: 47.5%;" />
-    <img src="/without_ball_2.jpg" alt="Kick Image 2" style="width: 47.5%;" />
+    <Image alt={"Image without Ball"} src={image_without_ball_3}  style="width: 47.5%;"  />
+    <Image alt={"Image without Ball"} src={image_without_ball_2} width={360} height={180}  style="width: 47.5%;"  />
 </div>
 
 The first image is incorrectly labeled as it contains a ball, and the second image seems like an error. These examples do not mean the dataset is worthless and should be disregarded; it just means it has not been manually combed through to remove incorrect labels and ensure high quality.
@@ -48,9 +54,12 @@ To save time and keep things simple, I've decided to focus on the 'with_ball' fo
 
 ## 4. Examples of kicking the ball
 
+import image_kick_2 from "../../assets/images/kick_2.jpg"
+import image_kick_1 from "../../assets/images/kick_1.jpg"
+
 <div style="display: flex; justify-content: space-between;">
-    <img src="/kick_2.jpg" alt="Kick Image 2" style="width: 47.5%;" />
-    <img src="/kick_1.jpg" alt="Kick Image 1" style="width: 47.5%;" />
+    <Image alt={"Image without Ball"} src={image_kick_2}  style="width: 47.5%;"  />
+    <Image alt={"Image without Ball"} src={image_kick_1} width={360} height={180}  style="width: 47.5%;"  />
 </div>
 
 Now that we have curated a dataset, we can start our machine learning approach!
@@ -81,7 +90,7 @@ Normalization is a vital preprocessing step in data science and machine learning
 
 #### 5. Image of smooth gradient space
 
-![example of photo without ball](/gradient_decent_1.webp)
+![Image with Ball](../../assets/images/gradient_decent_1.webp)
 
  For the rest of the blog i will use pytorch and pytorch lightning as my preferred framework for working with deep learning. But let's get back to it. So, how do we normalize our dataset? well, we will start by going over each of the three RGB channels and calculate the mean and standard deviation for all pixels in our training dataset. 
 
@@ -195,7 +204,7 @@ For this attempt i have decided to go another route that does not have to do wit
 
 ### 6. Pose estimation example
 
-![example of photo with ball](/pose_example.png)
+![Image with Ball](../../assets/images/pose_example.png)
 
 
 My idea is that we could run our dataset through a pose estimation algorithm to get an estimatoin of our players feet. Then if the feet of a player is colloding with a ball then we have detectded a kick!
@@ -204,7 +213,7 @@ To implement this we first have to extract the poses of the players, to do this 
 
 ### 7. MMPose inference example
 
-![example of photo with ball](/pose_example_2.png)
+![Image with Ball](../../assets/images/pose_example_2.png)
 
 After letting my pc suffer for 2 hours while i was away, the intire dataset finished and we can begin creating our heuristic approach to detect when a kick has happened or in this way. When a foot and ball are overlapping. 
 
@@ -275,16 +284,23 @@ After fixing some bugs with loading in the data i got the script to work, and th
 
 ### 8. Example of correct kick detection
 
-![example of photo with ball](/kick_detection_1.jpg)
+![Image with Ball](../../assets/images/kick_detection_1.jpg)
+
+
 
 ### 9. Example of incorrect kick detection
 
-![example of photo with ball](/kick_detection_2.jpg)
+![Image with Ball](../../assets/images/kick_detection_2.jpg)
 
 
 ### 10. All Examples of kick detection
 
-![example of photo with ball](/kick_detection_1.gif)
+
+import image_kick_detect from "../../assets/images/kick_detection_1.gif"
+
+<div style="display: flex; justify-content: space-between;">
+    <Image alt={"Image without Ball"} src={image_kick_detect} />
+</div>
 
 
 ## Conclusion

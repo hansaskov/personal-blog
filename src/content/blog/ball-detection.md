@@ -29,7 +29,7 @@ Now, let's proceed to examine some examples from the dataset. Below, you'll find
 
 As expected, the first photo contains a ball, while the second one does not. Excellent! Now, before we proceed, it's important to pause for a moment. Upon further inspection of the `without_ball` folder, I encountered some questionable images. Here are two examples that caught my attention:
 
-### 4. Example of images *"without"* ball
+### 3. Example of images *"without"* ball
 
 <div style="display: flex; justify-content: space-between;">
     <img src="/without_ball_3.jpg" alt="Kick Image 1" style="width: 47.5%;" />
@@ -46,7 +46,7 @@ The main issue with the dataset is that our objective is to detect when a kick h
 
 To save time and keep things simple, I've decided to focus on the 'with_ball' folder and manually tag the images where players are kicking the ball. In that folder, there are 1550 images, but only 64 of them actually show players kicking the ball. Below, I've included two examples of images where I believe you can clearly see a kick happening.
 
-## 5. Examples of kicking the ball
+## 4. Examples of kicking the ball
 
 <div style="display: flex; justify-content: space-between;">
     <img src="/kick_2.jpg" alt="Kick Image 2" style="width: 47.5%;" />
@@ -79,7 +79,7 @@ These splits are usually weighted to  70% for training, 20% for validation, and 
 
 Normalization is a vital preprocessing step in data science and machine learning. It's all about getting our data on an even footing before our models start learning. This is usually done by transforming our data between 1 and 0. But, our dataset might be biased in one of the two directions, to remidy this, we will calculate the mean and standard deviation of our data, and use that for our center. Normalization has the effect of making our gradient space "smoother", which will improve our optimizers ability to converge efficiently during the training process
 
-#### 6. Image of smooth gradient space
+#### 5. Image of smooth gradient space
 
 ![example of photo without ball](/gradient_decent_1.webp)
 
@@ -179,9 +179,13 @@ Also visualize the training process by comparing the loss and accuracy of the tr
 ## Hyperparameter tuning
 To remidy the unbalanced dataset i applied a weighting to the loss function that will give 25x more feedback to the network when the data label is of a kick. 
 
-Also try change some hyperparamets li
+Also try change some hyperparamets like learning rate, network deph and even convolutional Networks
 
 ## Conclusion
+The ml model had a very difficult time diffirenciating between the kick and no_kick data and i attribute two factors that could solve this problem.
+1. The first is to use a larger model that is able to run for larger images, the curret model heavily resizes the image for efficiency reasons. 
+1. Get better labels for the data. we could instead capture the match at a higher framerate and annotate each time the ball and a player is in contact with each other, this criteria is easier for humans to effectively label
+
 
 
 
@@ -189,7 +193,7 @@ Also try change some hyperparamets li
 # Attempt. 2
 For this attempt i have decided to go another route that does not have to do with training a deep learning model. Instead we will utilize trained models to create metadata and then engineer a herutic approach to detirmine if a kick is being made. For an example of pose estimation see the below image:
 
-### 7. Pose estimation example
+### 6. Pose estimation example
 
 ![example of photo with ball](/pose_example.png)
 
@@ -198,7 +202,7 @@ My idea is that we could run our dataset through a pose estimation algorithm to 
 
 To implement this we first have to extract the poses of the players, to do this i went to openmmlabs wide range of frameworks and chose their mmPose framework to performn inference on our dataset. They have a convinient script where you can point to your dataset and it will create the pose annotations for all images within that folder. Below is an exampleof all the poses calculated for a game.
 
-### 8. MMPose inference example
+### 7. MMPose inference example
 
 ![example of photo with ball](/pose_example_2.png)
 
@@ -269,17 +273,22 @@ for filename in unique_filenames:
 
 After fixing some bugs with loading in the data i got the script to work, and this is the result of my labor. 
 
-### 9. Example of correct kick detection
+### 8. Example of correct kick detection
 
 ![example of photo with ball](/kick_detection_1.jpg)
 
-### 10. Example of incorrect kick detection
+### 9. Example of incorrect kick detection
 
 ![example of photo with ball](/kick_detection_2.jpg)
 
 
-### 11. All Examples of kick detection
+### 10. All Examples of kick detection
 
 ![example of photo with ball](/kick_detection_1.gif)
 
+
+## Conclusion
+Our heristic approach for detecting kicks is able to detect when a ball is overlapping with a players foot, but there are issue when there are more than one ball in the frame. The wrong ball might be detected in this case. 
+
+For future improvements we can try to filter out the incorrect balls by detecting what color surrounds the ball and if it is green ie. the football field, then it should be used.
 

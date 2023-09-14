@@ -122,8 +122,8 @@ def calc_mean_std(data_dir, batch_size, num_workers, num_channels):
         std += inputs.std(dim=(0, 2, 3))
 
     # Step 6: Normalize the mean and std by dividing by the dataset size
-    mean /= len(dataset)
-    std /= len(dataset)
+    mean /= len(data_loader) # Corrected dataset -> data_loader
+    std /= len(data_loader)
 
     print('MEAN', mean)
     print('STD', std)
@@ -131,11 +131,15 @@ def calc_mean_std(data_dir, batch_size, num_workers, num_channels):
     return mean, std
 
 ```
+> Thanks to [Aris-Robotics](https://www.aris-robotics.com/) for making a correction 
 
 Let's run the code! Below, we have the result output for our training dataset.
 
-- **Mean**: (0.1075, 0.1197, 0.0787)
-- **STD**: (0.0441, 0.0449, 0.0513)
+- **Mean**: (0.4286, 0.4773, 0.3137)
+- **STD**: (0.1757, 0.1789, 0.2046)
+
+
+
 
 We will use these values to perform normalization when loading any of our data. To do this we define three datasets and how we want to load the data.
 

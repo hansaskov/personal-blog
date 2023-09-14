@@ -1,14 +1,6 @@
 ---
 import Layout from "../layouts/BlogPost.astro";
-import { Image, getImage } from "astro:assets";
 import myImage from "../assets/images/profile_picture_2.jpg";
-
-const optimizedImage = await getImage({
-	src: myImage,
-	format: 'avif',
-
-})
-
 
 ---
 

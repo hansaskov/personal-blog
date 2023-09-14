@@ -39,7 +39,7 @@ import image_without_ball_2 from "../../assets/images/without_ball_2.jpg"
 
 <div style="display: flex; justify-content: space-between;">
     <Image alt={"Image without Ball"} src={image_without_ball_3}  style="width: 47.5%;"  />
-    <Image alt={"Image without Ball"} src={image_without_ball_2} width={360} height={180}  style="width: 47.5%;"  />
+    <Image alt={"Image without Ball"} src={image_without_ball_2}  style="width: 47.5%;"  />
 </div>
 
 The first image is incorrectly labeled as it contains a ball, and the second image seems like an error. These examples do not mean the dataset is worthless and should be disregarded; it just means it has not been manually combed through to remove incorrect labels and ensure high quality.
@@ -59,7 +59,7 @@ import image_kick_1 from "../../assets/images/kick_1.jpg"
 
 <div style="display: flex; justify-content: space-between;">
     <Image alt={"Image without Ball"} src={image_kick_2}  style="width: 47.5%;"  />
-    <Image alt={"Image without Ball"} src={image_kick_1} width={360} height={180}  style="width: 47.5%;"  />
+    <Image alt={"Image without Ball"} src={image_kick_1}  style="width: 47.5%;"  />
 </div>
 
 Now that we have curated a dataset, we can start our machine learning approach!
@@ -197,8 +197,6 @@ The ml model had a very difficult time diffirenciating between the kick and no_k
 
 
 
-
-
 # Attempt. 2
 For this attempt i have decided to go another route that does not have to do with training a deep learning model. Instead we will utilize trained models to create metadata and then engineer a herutic approach to detirmine if a kick is being made. For an example of pose estimation see the below image:
 
@@ -298,9 +296,9 @@ After fixing some bugs with loading in the data i got the script to work, and th
 
 import image_kick_detect from "../../assets/images/kick_detection_1.gif"
 
-<div style="display: flex; justify-content: space-between;">
-    <Image alt={"Image without Ball"} src={image_kick_detect} />
-</div>
+
+<Image alt="Image without Ball" src={image_kick_detect} width={720} height={360} />
+
 
 
 ## Conclusion

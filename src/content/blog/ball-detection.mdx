@@ -1,5 +1,5 @@
 ---
-title: 'Two approaches for Kick Detection'
+title: 'Football Kick Detection'
 description: 'A guide to detect kick made in a football match'
 pubDate: 'Sep 14 2023'
 heroImage: '../../assets/images/kick_detection_1.jpg'
@@ -7,25 +7,25 @@ heroImage: '../../assets/images/kick_detection_1.jpg'
 
 import { Image } from 'astro:assets';
 
-## Description
+### Description
 
 This guide covers my attempts to detect kicks in a football match, either by training a classification model or by using pretrained models to our advantage.
 
-## Objective
+### Objective
 
 The objective is to develop a solution capable of determining whether a kick is taking place in a given frame, with the expectation of a proof-of-concept solution.
 
-## Kick dataset
+### Kick dataset
 
 Before we begin, let's take a closer look at the dataset's structure. The dataset comprises of a football match captured at a rate of one frame per second. The match is split into two folders: `with_ball` and `without_ball`, both of which contain YOLOv5 annotations for bounding boxes around the ball. I initially mistakenly assumed that these bounding boxes represented the players' legs when they kicked the ball, which led to inefficient use of my time. This serves as a reminder to always double-check and ensure a clear understanding of the dataset's contents.
 
 Now, let's proceed to examine some examples from the dataset. Below, you'll find two images, one from the `with_ball` folder and the other from the `without_ball` folder:
 
-### 1. Image with ball
+#### 1. Image with ball
 
 ![Image with Ball](../../assets/images/with_ball_2.png)
 
-### 2. Image without ball
+#### 2. Image without ball
 
 ![Image with Ball](../../assets/images/without_ball_1.jpg)
 
@@ -46,13 +46,13 @@ The first image is incorrectly labeled as it contains a ball, and the second ima
 
 With all of this in mind, let's get started!
 
-## Attempt 1. 
+## Attempt 1 
 
 The main issue with the dataset is that our objective is to detect when a kick has occurred, but no annotations have been provided to train a machine learning model. So what is the only logical solution? You guessed it! Annotate the data yourself.
 
 To save time and keep things simple, I've decided to focus on the 'with_ball' folder and manually tag the images where players are kicking the ball. In that folder, there are 1550 images, but only 64 of them actually show players kicking the ball. Below, I've included two examples of images where I believe you can clearly see a kick happening.
 
-## 4. Examples of kicking the ball
+### 4. Examples of kicking the ball
 
 import image_kick_2 from "../../assets/images/kick_2.jpg"
 import image_kick_1 from "../../assets/images/kick_1.jpg"
@@ -170,41 +170,41 @@ def setup(self, stage):
 
 That is all regarding data preproccesing, let's look at some ML models!
 
-## Define ML model
+### Define ML model
 
 To begin with, we will define a simple Dense Neural Network. There are many much better and more efficient methods, such as Convolutional Neural Networks and even transformer-based neural networks. However, this is slightly out of scope for this project.
 
-## Define hyperparamets
+### Define hyperparamets
 
 Talk about the hyperparamets used and the reason for it
 
-## Train
+### Train
 
 Talk about how pytorch lighting come with a runtime that allows for training on any kind of hardware and is really helpful for incapsulating the dataset from the models and training by providing structure. 
 
 
-## Evaluate results
+### Evaluate results
 
 Talk about the results being 96.511% accurate in the first go! But that it came with a caveat. The model didn't learn anything. When doing investigations on the test dataset, the model would always guess that no kick has occured and since the dataset is heavily unbalanded it would just guess for the same thing.
 
 Also visualize the training process by comparing the loss and accuracy of the training and validation. 
 
-## Hyperparameter tuning
+### Hyperparameter tuning
 To remidy the unbalanced dataset i applied a weighting to the loss function that will give 25x more feedback to the network when the data label is of a kick. 
 
 Also try change some hyperparamets like learning rate, network deph and even convolutional Networks
 
-## Conclusion
+### Conclusion
 The ml model had a very difficult time diffirenciating between the kick and no_kick data and i attribute two factors that could solve this problem.
 1. The first is to use a larger model that is able to run for larger images, the curret model heavily resizes the image for efficiency reasons. 
 1. Get better labels for the data. we could instead capture the match at a higher framerate and annotate each time the ball and a player is in contact with each other, this criteria is easier for humans to effectively label
 
 
 
-# Attempt. 2
+## Attempt 2
 For this attempt i have decided to go another route that does not have to do with training a deep learning model. Instead we will utilize trained models to create metadata and then engineer a herutic approach to detirmine if a kick is being made. For an example of pose estimation see the below image:
 
-### 6. Pose estimation example
+#### 6. Pose estimation example
 
 ![Image with Ball](../../assets/images/pose_example.png)
 
@@ -213,7 +213,7 @@ My idea is that we could run our dataset through a pose estimation algorithm to 
 
 To implement this we first have to extract the poses of the players, to do this i went to openmmlabs wide range of frameworks and chose their mmPose framework to performn inference on our dataset. They have a convinient script where you can point to your dataset and it will create the pose annotations for all images within that folder. Below is an exampleof all the poses calculated for a game.
 
-### 7. MMPose inference example
+#### 7. MMPose inference example
 
 ![Image with Ball](../../assets/images/pose_example_2.png)
 
@@ -241,13 +241,13 @@ The prediction made by MMPose have been give in the COCO format and is formatted
 
 Since we only care about the legs of the players we should only consider the last four keypoints of the knees and angles. My idea is that for each frame we will go through all players keypoints and check if their last four keypoints are within a one of the balls bounding boxes. 
 
-#### To do this we will need the following functions. 
+##### To do this we will need the following functions. 
 
 - `is_keypoint_within_bbox`
 - `load_bbox`
 - `load_keypoints`
   
-#### And helper functions
+##### And helper functions
 - `get_unique_filenames_in_folder`
 - `visualize_bbox_and_keypoint`
 
@@ -284,18 +284,18 @@ for filename in unique_filenames:
 
 After fixing some bugs with loading in the data i got the script to work, and this is the result of my labor. 
 
-### 8. Example of correct kick detection
+#### 8. Example of correct kick detection
 
 ![Image with Ball](../../assets/images/kick_detection_1.jpg)
 
 
 
-### 9. Example of incorrect kick detection
+#### 9. Example of incorrect kick detection
 
 ![Image with Ball](../../assets/images/kick_detection_2.jpg)
 
 
-### 10. All Examples of kick detection
+#### 10. All Examples of kick detection
 
 
 import image_kick_detect from "../../assets/images/kick_detection_1.gif"
@@ -305,7 +305,7 @@ import image_kick_detect from "../../assets/images/kick_detection_1.gif"
 
 
 
-## Conclusion
+### Conclusion
 Our heristic approach for detecting kicks is able to detect when a ball is overlapping with a players foot, but there are issue when there are more than one ball in the frame. The wrong ball might be detected in this case. 
 
 For future improvements we can try to filter out the incorrect balls by detecting what color surrounds the ball and if it is green ie. the football field, then it should be used.

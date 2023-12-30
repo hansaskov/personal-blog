@@ -71,6 +71,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 								src={heroImage}
 								alt=""
 								transition:name={heroImage.src}
+								loading="eager"
 							/>
 						)
 					}

@@ -10,30 +10,8 @@ import type { TransitionAnimationPair, TransitionDirectionalAnimations } from "a
 
 type Props = CollectionEntry<"blog">["data"];
 
-
-
-
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
-const anim: TransitionAnimationPair = {
-    old: {
-      name: description.substring(0, 20) + 'in',
-      duration: '0.2s',
-      easing: 'linear',
-      fillMode: 'forwards',
-    },
-    new: {
-      name: description.substring(0, 20) + 'out',
-      duration: '0.2s',
-      easing: 'linear',
-      fillMode: 'backwards',
-    }
-  };
-  
- const myFade: TransitionDirectionalAnimations = {
-    forwards: anim,
-    backwards: anim,
-  };
 
 ---
 
@@ -110,12 +88,12 @@ const anim: TransitionAnimationPair = {
 								)
 							}
 						</div>
-						<h1 transition:animate="slide" transition:name={title}>
+						<h1 >
 							{title}
 						</h1>
 						<hr />
 					</div>
-					<div transition:animate={myFade} >
+					<div transition:animate="fade" >
 						<slot />
 					</div>
 				</div>
